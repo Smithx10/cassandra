@@ -1,0 +1,23 @@
+cluster_name: 'Cassandra-Cluster' 
+num_tokens: 256
+{{ if env "CAS_NODE_SEED" }}
+seed_provider:
+		- class_name: org.apache.cassandra.locator.SimpleSeedProvider
+				{{ if range service "cassandra-seed"}}				
+				- seeds: {{.Address | .join ","}}
+				{{ else }}
+				- seeds: {{ ip }} 
+				{{end}}
+{{ end }} 
+{{ if env "CAS_NODE_DATA" }}
+seed_provider:
+		- class_name: org.apache.cassandra.locator.SimpleSeedProvider
+				{{range service "cassandra-seed"}}				
+				- seeds: {{.Address | .join ","}}
+				{{end}}
+{{ end }} 
+{{ with node }}
+listen_address: {{ .Node.Address }}
+rpc_address: {{ .Node.Address }}
+{{ end }} 
+endpoint_snitch: GossipingPropertyFileSnitch
