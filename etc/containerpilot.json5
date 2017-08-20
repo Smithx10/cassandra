@@ -16,14 +16,23 @@
       }{{ end }}
     },
     {
-      name: '{{ .ES_SERVICE_NAME | default "cassandra-seed" }}',
+      name: '{{ .CAS_SERVICE_NAME | default "cassandra" }}',
+      port: 7000,
       exec: [
-        "ping",
-				"google.com"
+        "cassandra",
+				"-R"
       ],
       when: {
         source: "preStart",
         once: "exitSuccess"
+      },
+      health: {
+        exec: [
+         "/usr/local/bin/manage.sh",
+         "health"
+        ],
+        interval: 5,
+        ttl: 10
       }
     },
     {{ if .CONSUL_AGENT }}{
@@ -50,8 +59,5 @@
         once: "stopping"
       }
     }{{ end }}
-  ],
-  control: {
-  socket: "/var/run/containerpilot/containerpilot.socket"
-  }
+  ]
 }
