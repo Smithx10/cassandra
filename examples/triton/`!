@@ -1,0 +1,37 @@
+version: '2.1'
+# cassandra demonstration of the Autopilot patternservices:
+  seed:
+    image: autopilotpattern/cassandra:test
+    labels:
+      - triton.cns.services=cas-seed
+    restart: always
+    mem_limit: 2g
+    ports:
+      - 7000
+      - 7001
+      - 7199
+      - 9042
+      - 9160
+    network_mode: bridge
+    environment:
+      - CONSUL=cas-consul.svc.${TRITON_CNS_SEARCH_DOMAIN_PRIVATE}
+      - CONSUL_AGENT=1
+      - CAS_NODE_SEED=1
+    command: >
+      /usr/local/bin/containerpilot
+# ---------------------------------------------------
+# Consul as a service discovery tier
+  consul:
+    image: autopilotpattern/consul:${TAG:-latest}
+    labels:
+      - triton.cns.services=cas-consul
+      - com.joyent.package=dds-128m
+    restart: always
+    mem_limit: 128m
+    ports:
+      - 8500
+    network_mode: bridge
+    environment:
+      - CONSUL=cas-consul.svc.${TRITON_CNS_SEARCH_DOMAIN_PRIVATE}
+    command: >
+      /usr/local/bin/containerpilot
