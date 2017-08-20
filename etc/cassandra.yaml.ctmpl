@@ -3,7 +3,7 @@ num_tokens: 256 {{ $hostname := env "HOST" }}{{ range nodes }}{{ if eq .Node $ho
 seed_provider:
   - seeds: {{.Address | .join "," }}{{ end }}{{ else }}
 seed_provider:
-  - seeds: {{ .Address | .join "," }}{{ end }}
+  - seeds: {{ .Address }}{{ end }}
 listen_address: {{ .Address }}
-rpc_address: {{ .Address }}{{ end }}
+rpc_address: {{ .Address }}{{ end }}{{ end }}
 endpoint_snitch: GossipingPropertyFileSnitch

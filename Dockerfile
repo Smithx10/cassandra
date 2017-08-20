@@ -12,6 +12,13 @@ RUN yum update -y \
 			which \
 		&& yum clean all
 
+
+# Add jq
+RUN export JQ_VER=1.5 \
+  && export JQ_URL=https://github.com/stedolan/jq/releases/download/jq-${JQ_VER}/jq-linux64 \
+  && curl -Ls --fail -o /bin/jq ${JQ_URL} \
+  && chmod +x /bin/jq
+
 # Install Consul
 # Releases at https://releases.hashicorp.com/consul
 # Add Consul and set its configuration
