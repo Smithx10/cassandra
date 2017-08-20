@@ -7,3 +7,6 @@ seed_provider:
 listen_address: {{ .Address }}
 rpc_address: {{ .Address }}{{ end }}{{ end }}
 endpoint_snitch: GossipingPropertyFileSnitch
+commitlog_sync: periodic
+commitlog_sync_period_in_ms: 10000
+partitioner: Murmur3Partitioner
