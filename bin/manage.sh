@@ -10,7 +10,7 @@ preStart() {
   consul-template \
 		-once \
 		-consul-addr ${CONSUL}:8500 \
-		-template "/etc/cassandra.yaml.ctmpl:/etc/cassandra/cassandra.yaml"
+		-template "/etc/cassandra.yaml.ctmpl:/etc/cassandra/conf/cassandra.yaml"
 }
 
 health() {
