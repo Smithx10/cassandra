@@ -11,6 +11,11 @@ preStart() {
 		-once \
 		-consul-addr ${CONSUL}:8500 \
 		-template "/etc/cassandra.yaml.ctmpl:/etc/cassandra/conf/cassandra.yaml"
+
+  consul-template \
+	  -once \
+	  -consul-addr ${CONSUL}:8500 \
+		-template "/etc/cassandra-topology.properties.ctmpl:/etc/cassandra/conf/cassandra-topology.properties"
 }
 
 health() {

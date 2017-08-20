@@ -1,12 +1,20 @@
 cluster_name: 'Cassandra-Cluster'
 num_tokens: 256 {{ $hostname := env "HOST" }}{{ range nodes }}{{ if eq .Node $hostname }}{{ if service "cassandra-seed" }}{{ range service "cassandra-seed" }}
 seed_provider:
-  - seeds: {{.Address | .join "," }}{{ end }}{{ else }}
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: {{.Address | .join "," }}{{ end }}{{ else }}
 seed_provider:
-  - seeds: {{ .Address }}{{ end }}
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: {{ .Address }}{{ end }}
 listen_address: {{ .Address }}
 rpc_address: {{ .Address }}{{ end }}{{ end }}
 endpoint_snitch: GossipingPropertyFileSnitch
 commitlog_sync: periodic
 commitlog_sync_period_in_ms: 10000
 partitioner: Murmur3Partitioner
+data_file_directories:
+  - /var/lib/cassandra/data
+commitlog_directory: /var/lib/cassandra/commitlog
+saved_caches_directory: /var/lib/cassandra/saved_caches

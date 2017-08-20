@@ -59,6 +59,7 @@ RUN export CP_VER=3.4.0 \
 
 # ref https://www.rethinkdb.com/docs/config-file/
 # Add Configs and Binaries
+COPY etc/cassandra-topology.properties.ctmpl /etc
 COPY etc/cassandra.yaml.ctmpl /etc
 COPY etc/containerpilot.json5 /etc
 COPY bin /usr/local/bin
