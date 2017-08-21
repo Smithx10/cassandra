@@ -10,7 +10,8 @@ RUN yum update -y \
 			openjdk-8-jre-headless \
 			unzip \
 			which \
-		&& yum clean all
+		&& yum clean all \
+		&& rm -rf /etc/cassandra/conf/cassandra.yaml
 
 
 # Add jq

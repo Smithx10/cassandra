@@ -1,4 +1,0 @@
-# Cassandra Node IP=Data Center:Rack
-{{ $hostname := env "HOST" }}{{ range nodes }}{{ if eq .Node $hostname }}{{ if service "cassandra-seed" }}{{ range service "cassandra-seed" }}{{ .Address }}=DC1:RAC1{{ end }}{{ else }}{{ .Address }}=DC1:RAC1{{ end }}{{ end }}{{ end }}
-# default for unknown nodes
-default=DC1:r1

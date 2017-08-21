@@ -1,13 +1,21 @@
 cluster_name: 'Cassandra-Cluster'
-num_tokens: 256 {{ $hostname := env "HOST" }}{{ range nodes }}{{ if eq .Node $hostname }}{{ if service "cassandra-seed" }}{{ range service "cassandra-seed" }}
+num_tokens: 256 {{ $hostname := env "HOST" }}{{ range nodes }}{{ if eq .Node $hostname }}{{ if env "CAS_NODE_SEED" }}{{ if service "cassandra-seed" }}{{ range $index, $service := service "cassandra-seed" }}{{ if lt $index  2 }}
 seed_provider:
   - class_name: org.apache.cassandra.locator.SimpleSeedProvider
     parameters:
-      - seeds: {{.Address | .join "," }}{{ end }}{{ else }}
+      - seeds: {{ $service.Address  }}{{ end }}{{ else }}
 seed_provider:
   - class_name: org.apache.cassandra.locator.SimpleSeedProvider
     parameters:
-      - seeds: {{ .Address }}{{ end }}
+      - seeds: {{ $service.Address | join ","  }}{{ end }}{{ else }}
+seed_provider:
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: {{ .Address }}{{ end }}{{ end }}{{ if env "CAS_NODE_DATA" }}{{ if service "cassandra-seed" }}{{ range $index, $service := service "cassandra-seed" }}{{ if lt $index  2 }}
+seed_provider:
+  - seeds: {{ $service.Address  }}{{ end }}{{ else }}
+seed_provider:
+  - seeds: {{ $service.Address | join ","  }}{{ end }}{{ end }}
 listen_address: {{ .Address }}
 rpc_address: {{ .Address }}{{ end }}{{ end }}
 endpoint_snitch: GossipingPropertyFileSnitch

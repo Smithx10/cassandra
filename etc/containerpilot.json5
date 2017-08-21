@@ -20,7 +20,10 @@
       port: 7000,
       exec: [
         "cassandra",
-				"-R"
+        "-f",
+				"-R",
+        "-D",
+        "cassandra.config=file:///etc/cassandra/conf/cassandra.yaml"
       ],
       when: {
         source: "preStart",
