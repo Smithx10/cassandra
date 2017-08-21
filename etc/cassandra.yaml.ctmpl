@@ -15,7 +15,7 @@ seed_provider:
 seed_provider:
   - seeds: {{ $service.Address  }}{{ end }}{{ else }}
 seed_provider:
-  - seeds: {{ $service.Address | join ","  }}{{ end }}{{ end }}
+  - seeds: {{ $service.Address | join ","  }}{{ end }}{{ end }}{{ end }}
 listen_address: {{ .Address }}
 rpc_address: {{ .Address }}{{ end }}{{ end }}
 endpoint_snitch: GossipingPropertyFileSnitch
